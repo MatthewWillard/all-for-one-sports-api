@@ -5,6 +5,8 @@ const cors = require('cors')
 const helmet = require('helmet')
 const { NODE_ENV } = require('./config')
 const {CLIENT_ORIGIN} = require('./config');
+const authRouter = require('./auth/auth-router')
+const usersRouter = require('./users/users-router')
 
 app.use(
     cors({
@@ -23,6 +25,8 @@ app.use(helmet())
 app.use(cors())
 app.use('/api/login', loginRouter)
 app.use('/api/register', registerRouter)
+app.use('/api/auth', authRouter)
+app.use('/api/users', usersRouter)
 app.use('/api/NFLNews', nflNewsRouter)
 app.use('/api/NHLNews', nhlNewsRouter)
 app.use('/api/ESPN', espnRouter)

@@ -1,22 +1,16 @@
-const express = require('express');
-const app = express();
+require('dotenv').config()
 
-app.use((error, req, res, next) => {
-  let response
-  if (process.env.NODE_ENV === 'production') {
-    response = { error: { message: 'server error' }}
-  } else {
-    response = { error }
-  }
-  res.status(500).json(response)
+const knex = require('knex')
+const app = require('./app')
+const { PORT, DB_URL } = require('./config')
+
+const db = knex({
+  client: 'pg',
+  connection: DB_URL,
 })
 
-const PORT = process.env.PORT || 3000;
+app.set('db', db)
 
-app.get('/api/*', (req, res) => {
-  res.json({ok: true});
-});
-
-app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
-
-module.exports = {app};
+app.listen(PORT, () => {
+  console.log(`Server listening at http://localhost:${PORT}`)
+})
